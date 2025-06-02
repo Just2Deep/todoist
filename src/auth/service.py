@@ -7,7 +7,7 @@ import jwt
 from jwt import PyJWTError
 from sqlalchemy.orm import Session
 from src.entities.user import User
-from auth import model
+from src.auth import model
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from src.exceptions import AuthenticationError
 import logging

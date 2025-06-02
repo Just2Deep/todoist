@@ -1,8 +1,7 @@
 from typing import Annotated
 from fastapi import Depends, Request, APIRouter
 from starlette import status
-from auth import model
-from auth import service
+from src.auth import model, service
 from fastapi.security import OAuth2PasswordRequestForm
 from src.database.core import DbSession
 from src.rate_limiting import limiter
