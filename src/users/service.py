@@ -1,15 +1,16 @@
+import logging
 from uuid import UUID
+
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
-from . import model
+
+from src.auth.service import get_password_hash, verify_password
+from src.entities.user import User
 from src.exceptions import (
-    UserNotFoundError,
     InvalidPasswordError,
     PasswordMismatchError,
+    UserNotFoundError,
 )
-from src.auth.service import verify_password, get_password_hash
-from src.entities.user import User
-import logging
+from src.users import model
 
 
 def get_user_by_id(db, user_id: UUID):

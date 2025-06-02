@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api import register_routes
-from src.logging import configure_logging, LogLevels
+from src.logging import LogLevels, configure_logging
+
 # from src.database.core import engine, Base
 
 configure_logging(level=LogLevels.info)

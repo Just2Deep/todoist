@@ -1,9 +1,10 @@
-from sqlalchemy import ForeignKey, Integer, String, Boolean, DateTime
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 from datetime import datetime, timezone
 from enum import Enum
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.core import Base
 

@@ -1,16 +1,15 @@
-from fastapi import APIRouter, status
-from src.database.core import DbSession
 from uuid import UUID
 
-from src.todos import model, service
+from fastapi import APIRouter, status
+
 from src.auth.service import CurrentUser
+from src.database.core import DbSession
+from src.todos import model, service
 
 router = APIRouter(prefix="/todos", tags=["Todos"])
 
 
-@router.post(
-    "/", status_code=status.HTTP_201_CREATED, response_model=model.TodoResponse
-)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=model.TodoResponse)
 def create_todo(
     todo_data: model.TodoCreate,
     current_user: CurrentUser,

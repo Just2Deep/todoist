@@ -1,12 +1,12 @@
+import logging
 from datetime import datetime, timezone
 from uuid import UUID
 
 from sqlalchemy.orm import Session
-from src.entities.todo import Todo
-from src.auth.model import TokenData
-from src.exceptions import TodoNotFoundError, TodoCreationError
-import logging
 
+from src.auth.model import TokenData
+from src.entities.todo import Todo
+from src.exceptions import TodoCreationError, TodoNotFoundError
 from src.todos.model import TodoCreate
 
 

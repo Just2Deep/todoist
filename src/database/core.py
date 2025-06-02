@@ -1,10 +1,10 @@
+import os
 from typing import Annotated, Generator
+
+from dotenv import load_dotenv
 from fastapi import Depends
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker, declarative_base
-from dotenv import load_dotenv
-import os
-
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 load_dotenv()
 

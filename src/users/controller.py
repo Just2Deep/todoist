@@ -1,9 +1,7 @@
 from fastapi import APIRouter, status
-
+from src.auth.service import CurrentUser
 from src.database.core import DbSession
 from src.users import model, service
-from src.auth.service import CurrentUser
-
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

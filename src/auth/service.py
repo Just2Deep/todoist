@@ -1,18 +1,19 @@
+import logging
+import os
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 from uuid import uuid4
-from fastapi import Depends
-from passlib.context import CryptContext
-import jwt
-from jwt import PyJWTError
-from sqlalchemy.orm import Session
-from src.entities.user import User
-from src.auth import model
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from src.exceptions import AuthenticationError
-import logging
 
-import os
+import jwt
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jwt import PyJWTError
+from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+
+from src.auth import model
+from src.entities.user import User
+from src.exceptions import AuthenticationError
 
 SECRET_KEY = os.getenv("SECRET_KEY")  # Replace with your actual secret key
 ALGORITHM = "HS256"
