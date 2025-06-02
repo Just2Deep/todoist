@@ -4,12 +4,14 @@ from enum import StrEnum
 LOG_FORMAT_DEBUG = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_FORMAT_INFO = "%(asctime)s - %(levelname)s - %(message)s"
 
+
 class LogLevels(StrEnum):
     debug = "DEBUG"
     info = "INFO"
     warning = "WARNING"
     error = "ERROR"
     critical = "CRITICAL"
+
 
 def configure_logging(level: LogLevels = LogLevels.error) -> None:
     """
@@ -34,8 +36,9 @@ def configure_logging(level: LogLevels = LogLevels.error) -> None:
             format=LOG_FORMAT_DEBUG,
         )
 
-        return 
-    
+        return
+
     logging.basicConfig(
-        level=level.value
+        level=level.value,
+        format=LOG_FORMAT_INFO,
     )
