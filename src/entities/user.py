@@ -1,9 +1,9 @@
-from sqlalchemy import ForeignKey, Integer, String, Boolean, DateTime
+from sqlalchemy import String, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 
-from ..database.core import Base
+from src.database.core import Base
 
 
 class User(Base):

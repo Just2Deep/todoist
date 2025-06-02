@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime, timezone
 from enum import Enum
 
-from ..database.core import Base
+from src.database.core import Base
 
 
 class Priority(Enum):

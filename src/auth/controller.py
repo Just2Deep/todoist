@@ -1,11 +1,11 @@
 from typing import Annotated
 from fastapi import Depends, Request, APIRouter
 from starlette import status
-from . import model
-from . import service
+from auth import model
+from auth import service
 from fastapi.security import OAuth2PasswordRequestForm
-from ..database.core import DbSession
-from ..rate_limiting import limiter
+from src.database.core import DbSession
+from src.rate_limiting import limiter
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
