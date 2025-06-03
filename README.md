@@ -38,7 +38,7 @@ src/
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/yourusername/todo-clean.git
+   git clone https://github.com/Just2Deep/todo-clean.git
    cd todo-clean/todoist
    ```
 
@@ -64,10 +64,10 @@ src/
 
 ## 🛠️ Tech Stack
 
-- **Python 3.11+**
+- **Python 3.13+**
 - **SQLAlchemy 2.0**
 - **PostgreSQL**
-- **FastAPI** (optional for API)
+- **FastAPI** 
 - **Alembic** (migrations)
 
 ---
