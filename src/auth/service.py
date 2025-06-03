@@ -37,12 +37,12 @@ def get_password_hash(password: str) -> str:
     return bcrypt_context.hash(password)
 
 
-def authenticate_user(db: Session, email: str, password: str) -> User | bool:
+def authenticate_user(email: str, password: str, db: Session) -> User | bool:
     """
     Authenticate a user by email and password.
     """
     user = db.query(User).filter(User.email == email).first()
-    if not user or not verify_password(password, user.password):
+    if not user or not verify_password(password, user.hashed_password):
         logging.error(f"Authentication failed for user: {email}")
         return False
     return user
@@ -57,6 +57,7 @@ def create_access_token(email: str, user_id: str, expires_delta: timedelta) -> s
         "id": user_id,
         "exp": datetime.now(timezone.utc) + expires_delta,
     }
+
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
@@ -82,7 +83,7 @@ def register_user(db: Session, user_data: model.RegisterUserRequest) -> User:
             id=uuid4(),
             email=user_data.email,
             username=user_data.username,
-            password=get_password_hash(user_data.password),
+            hashed_password=get_password_hash(user_data.password),
         )
         db.add(new_user)
         db.commit()
@@ -112,7 +113,7 @@ def login_for_access_token(
     """
     Authenticate a user and return an access token.
     """
-    user = authenticate_user(db, form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         logging.error("Invalid credentials provided.")
         raise AuthenticationError()

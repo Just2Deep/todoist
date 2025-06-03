@@ -37,9 +37,8 @@ def test_user():
     return User(
         id=uuid4(),
         email="test@example.com",
-        first_name="Test",
-        last_name="User",
-        password_hash=password_hash,
+        username="TestUser",
+        hashed_password=password_hash,
     )
 
 
