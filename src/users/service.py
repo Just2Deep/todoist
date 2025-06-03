@@ -13,7 +13,7 @@ from src.exceptions import (
 from src.users import model
 
 
-def get_user_by_id(db, user_id: UUID):
+def get_user_by_id(db, user_id: UUID) -> User:
     """
     Retrieve a user by their ID.
     """
@@ -38,7 +38,7 @@ def change_password(
             logging.error(f"User with ID {user_id} not found.")
             raise UserNotFoundError(f"User with ID {user_id} not found.")
 
-        if not verify_password(password_change.current_password, user.password):
+        if not verify_password(password_change.current_password, user.hashed_password):
             logging.error("Current password is incorrect.")
             raise InvalidPasswordError("Current password is incorrect.")
 
@@ -46,7 +46,7 @@ def change_password(
             logging.error("New password and confirmation do not match.")
             raise PasswordMismatchError("New password and confirmation do not match.")
 
-        user.password = get_password_hash(password_change.new_password)
+        user.hashed_password = get_password_hash(password_change.new_password)
         db.commit()
         return None
     except Exception as e:
