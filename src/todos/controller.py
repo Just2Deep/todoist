@@ -59,7 +59,11 @@ def update_todo(
     )
 
 
-@router.post("/{todo_id}/complete", response_model=model.TodoResponse)
+@router.put(
+    "/{todo_id}/complete",
+    status_code=status.HTTP_200_OK,
+    response_model=model.TodoResponse,
+)
 def complete_todo(
     todo_id: UUID,
     current_user: CurrentUser,
@@ -68,7 +72,7 @@ def complete_todo(
     """
     Mark a todo item as completed.
     """
-    return service.complete_todo(db=db, todo_id=todo_id, current_user=current_user)
+    return service.complete_todo(current_user=current_user, db=db, todo_id=todo_id)
 
 
 @router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -80,4 +84,4 @@ def delete_todo(
     """
     Delete a todo item.
     """
-    service.delete_todo(db=db, todo_id=todo_id, current_user=current_user)
+    service.delete_todo(current_user=current_user, db=db, todo_id=todo_id)
