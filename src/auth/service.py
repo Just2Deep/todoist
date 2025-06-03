@@ -104,7 +104,7 @@ def get_current_user(
     return verify_token(token)
 
 
-CurrentUser = Annotated[User, Depends(get_current_user)]
+CurrentUser = Annotated[model.TokenData, Depends(get_current_user)]
 
 
 def login_for_access_token(

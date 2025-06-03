@@ -2,8 +2,8 @@ import uuid
 from datetime import datetime, timezone
 from enum import Enum
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Boolean, DateTime, ForeignKey, String
+from sqlalchemy.dialects.postgresql import UUID, ENUM
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.core import Base
@@ -31,7 +31,9 @@ class Todo(Base):
         DateTime(timezone=True), nullable=True
     )
     is_completed: Mapped[bool] = mapped_column(Boolean, default=False)
-    priority: Mapped[int] = mapped_column(Integer, default=Priority.NORMAL.value)
+    priority: Mapped[Priority] = mapped_column(
+        ENUM(Priority), nullable=False, default=Priority.NORMAL
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.now(timezone.utc)
     )

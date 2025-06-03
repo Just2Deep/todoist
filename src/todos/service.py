@@ -10,9 +10,11 @@ from src.exceptions import TodoCreationError, TodoNotFoundError
 from src.todos.model import TodoCreate
 
 
-def create_todo(db: Session, todo_data: TodoCreate, current_user: TokenData) -> Todo:
+def create_todo(current_user: TokenData, db: Session, todo_data: TodoCreate) -> Todo:
     try:
-        todo = Todo(**todo_data.model_dump(), user_id=current_user.get_uuid())
+        todo = Todo(**todo_data.model_dump())
+        todo.user_id = current_user.get_uuid()
+
         db.add(todo)
         db.commit()
         db.refresh(todo)
@@ -23,13 +25,13 @@ def create_todo(db: Session, todo_data: TodoCreate, current_user: TokenData) -> 
         raise TodoCreationError(str(e))
 
 
-def get_todos(db: Session, current_user: TokenData) -> list[Todo]:
+def get_todos(current_user: TokenData, db: Session) -> list[Todo]:
     todos = db.query(Todo).filter(Todo.user_id == current_user.get_uuid()).all()
     logging.info(f"Retrieved {len(todos)} todos for user {current_user.get_uuid()}")
     return todos
 
 
-def get_todo_by_id(db: Session, todo_id: UUID, current_user: TokenData) -> Todo:
+def get_todo_by_id(current_user: TokenData, db: Session, todo_id: UUID) -> Todo:
     todo = (
         db.query(Todo)
         .filter(Todo.id == todo_id, Todo.user_id == current_user.get_uuid())
@@ -55,11 +57,11 @@ def update_todo(
 
     db.commit()
     logging.info(f"Todo updated successfully: {todo_id}")
-    return get_todo_by_id(db, todo_id, current_user)
+    return get_todo_by_id(current_user, db, todo_id)
 
 
-def complete_todo(db: Session, todo_id: UUID, current_user: TokenData) -> Todo:
-    todo = get_todo_by_id(db, todo_id, current_user)
+def complete_todo(current_user: TokenData, db: Session, todo_id: UUID) -> Todo:
+    todo = get_todo_by_id(current_user, db, todo_id)
     if todo.is_completed:
         logging.warning(f"Todo {todo_id} is already completed.")
         return todo
@@ -74,8 +76,8 @@ def complete_todo(db: Session, todo_id: UUID, current_user: TokenData) -> Todo:
     return todo
 
 
-def delete_todo(db: Session, todo_id: UUID, current_user: TokenData) -> None:
-    todo = get_todo_by_id(db, todo_id, current_user)
+def delete_todo(current_user: TokenData, db: Session, todo_id: UUID) -> None:
+    todo = get_todo_by_id(current_user, db, todo_id)
     db.delete(todo)
     db.commit()
     logging.info(f"Todo deleted successfully: {todo_id}")
