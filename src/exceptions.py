@@ -26,7 +26,7 @@ class InvalidPasswordError(HTTPException):
     """Raised when the provided password is invalid."""
 
     def __init__(self, message: str = "Invalid password."):
-        super().__init__(status_code=400, detail=message)
+        super().__init__(status_code=401, detail=message)
 
 
 class PasswordMismatchError(HTTPException):
