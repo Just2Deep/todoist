@@ -20,7 +20,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Token expiration time in minutes
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login")
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__ident="2b")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -74,7 +74,7 @@ def verify_token(token: str) -> model.TokenData:
         raise AuthenticationError()
 
 
-def register_user(db: Session, user_data: model.RegisterUserRequest) -> User:
+def register_user(db: Session, user_data: model.RegisterUserRequest) -> None:
     """
     Register a new user in the database.
     """
@@ -87,8 +87,6 @@ def register_user(db: Session, user_data: model.RegisterUserRequest) -> User:
         )
         db.add(new_user)
         db.commit()
-        db.refresh(new_user)
-        return new_user
     except Exception as e:
         logging.error(f"User registration failed: {str(e)}")
         db.rollback()
@@ -118,8 +116,9 @@ def login_for_access_token(
         logging.error("Invalid credentials provided.")
         raise AuthenticationError()
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        email=user.email, user_id=str(user.id), expires_delta=access_token_expires
+        email=user.email,
+        user_id=str(user.id),
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     return model.Token(access_token=access_token, token_type="bearer")

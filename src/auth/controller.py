@@ -11,20 +11,20 @@ from src.rate_limiting import limiter
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=model.Token)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/hour")
 async def register_user(
     request: Request, register_user_request: model.RegisterUserRequest, db: DbSession
-) -> model.Token:
+):
     """
     Register a new user.
     """
-    return service.register_user(db=db, user_data=register_user_request)
+    service.register_user(db=db, user_data=register_user_request)
 
 
-@router.post("/token", response_model=model.Token)
+@router.post("/token", status_code=status.HTTP_200_OK, response_model=model.Token)
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends(service.oauth2_bearer)],
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: DbSession,
 ) -> model.Token:
     """
